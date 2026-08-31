@@ -8,6 +8,18 @@ Research code for a **transferable, physics-constrained 1D–2D urban flood-fiel
 
 > Status: research implementation and verification suite. The code has synthetic end-to-end tests, but **no scientific performance claim is made until the official UrbanFloodBench data are run under the locked protocols below**.
 
+## Recommended Web GPT → GitHub → Codex workflow
+
+This repository is designed for the following operating model:
+
+1. **Web ChatGPT is the code-authoring authority**: research logic, source code, tests, configs and documentation are created or revised here and committed to GitHub.
+2. **GitHub `main` is the code hand-off contract** between Web ChatGPT and the local execution environment.
+3. **Codex runs locally**: it pulls the latest `main`, uses the local Python/CUDA environment and the locally stored UrbanFloodBench data, then executes audits, training, evaluation and diagnostics.
+4. **Local data stay local**: UrbanFloodBench raw data, virtual environments, checkpoints, caches and large result files are intentionally excluded from Git.
+5. Before every formal run, Codex must record the Git commit SHA together with the resolved config and data/split lineage.
+
+For exact synchronization commands and rules, see `docs/CODEX_SYNC.md`.
+
 ## Scientific design
 
 The model represents each city as a heterogeneous hydraulic graph
@@ -234,4 +246,4 @@ The new research hypothesis tested here is not “a Transformer is better than a
 - CI executes compilation + tests;
 - no dataset or trained weights are committed by default.
 
-See `docs/METHODS_MAPPING.md` for the direct mapping between code modules, paper hypotheses and required result tables/figures, and `docs/RUNBOOK.md` for environment setup, formal-run gates, sparse-city restrictions, evidence archiving and common failure modes.
+See `docs/METHODS_MAPPING.md` for the direct mapping between code modules, paper hypotheses and required result tables/figures, `docs/RUNBOOK.md` for environment setup and formal-run gates, and `docs/CODEX_SYNC.md` for the Web GPT → GitHub → local Codex synchronization contract.

@@ -1,5 +1,20 @@
 # Formal runbook and operating notes
 
+## 0. Repository synchronization contract
+
+The authoritative code hand-off is GitHub `main`. Web ChatGPT may author or revise code and documentation in GitHub; Codex should then synchronize the repository locally before execution. The UrbanFloodBench dataset, Python/CUDA environments, caches, checkpoints and large evidence artifacts remain local unless explicitly requested otherwise.
+
+Before any formal run, Codex should:
+
+```bash
+git fetch origin
+git switch main
+git pull --ff-only origin main
+git rev-parse HEAD
+```
+
+Record the resulting commit SHA in the run evidence. Do not resolve local code conflicts by silently mixing uncommitted research-code edits with the formal `main` version. See `docs/CODEX_SYNC.md` for the full workflow.
+
 This runbook is the operational contract for reproducing the UrbanFloodBench experiments. Read it before launching an expensive training run.
 
 ## 1. Environment

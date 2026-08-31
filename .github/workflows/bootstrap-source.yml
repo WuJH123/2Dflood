@@ -39,7 +39,10 @@ jobs:
 
           parts = [
               '.bootstrap/part00.b64',
-              '.bootstrap/part01a.b64',
+              '.bootstrap/part01a0.b64',
+              '.bootstrap/part01a10.b64',
+              '.bootstrap/part01a11.b64',
+              '.bootstrap/part01a2.b64',
               '.bootstrap/part01b.b64',
               '.bootstrap/part01c.b64',
               '.bootstrap/part01d.b64',

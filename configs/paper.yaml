@@ -1,0 +1,66 @@
+data:
+  root: data/UrbanFloodBench
+  model_glob: "Model_*"
+  warmup_steps: 10
+  context_steps: 4
+  horizon_steps: 12
+  window_stride: 4
+  cache_events: true
+  strict_schema: true
+  standardize: true
+  rainfall_known_future: true
+  split_seed: 20260831
+model:
+  hidden_dim: 128
+  processor_layers: 4
+  dropout: 0.1
+  token_count: 32
+  token_heads: 4
+  token_layers: 2
+  use_global_tokens: true
+  use_coupling: true
+  use_hydraulic_head: true
+  use_flux_decoder: true
+  use_mass_correction: false
+  adapter_rank: 16
+  max_history: 8
+loss:
+  water_level: 1.0
+  water_volume: 0.25
+  inlet_flow: 0.10
+  edge_flow_1d: 0.15
+  edge_flow_2d: 0.25
+  edge_velocity_1d: 0.05
+  edge_velocity_2d: 0.10
+  mass_local: 0.20
+  mass_global: 0.10
+  dry_nonnegative: 0.02
+train:
+  epochs: 80
+  lr: 0.0002
+  weight_decay: 0.0001
+  grad_clip: 1.0
+  amp: true
+  ema_decay: 0.995
+  teacher_forcing_start: 1.0
+  teacher_forcing_end: 0.1
+  curriculum_epochs: 50
+  masked_state_prob: 0.25
+  masked_sensor_prob: 0.50
+  early_stopping_patience: 12
+  checkpoint_every: 5
+  device: auto
+  seed: 20260831
+  windows_per_event: 24
+  val_events_per_epoch: 4
+  output_dir: outputs/paper
+evaluation:
+  flood_thresholds_m: [0.05, 0.10, 0.30, 0.50]
+  arrival_threshold_m: 0.05
+  event_balanced: true
+  save_predictions: true
+  sparse_sensor_fractions: [0.001, 0.005, 0.01, 0.05]
+  few_shot_events: [1, 3, 5]
+  sensor_layout_seeds: [20260831, 20260832, 20260833]
+protocol: leave_one_city_out
+target_model: null

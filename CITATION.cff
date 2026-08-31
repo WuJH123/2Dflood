@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this software, cite the associated paper when available and the UrbanFloodBench dataset."
+title: "HydroGraph-Operator: transferable urban flood-field simulation"
+type: software
+version: 0.1.0
+date-released: 2026-08-31
+repository-code: "https://github.com/WuJH123/2Dflood"
+license: MIT

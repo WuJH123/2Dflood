@@ -62,7 +62,10 @@ jobs:
               tf.extractall('.')
           PY
           rm -rf .bootstrap
-          rm -f .github/workflows/bootstrap-source.yml
+          # Actions' GITHUB_TOKEN cannot create/update workflow files. Keep this
+          # bootstrap workflow unchanged and let the authenticated GitHub connector
+          # install the final CI workflow after the source commit lands.
+          rm -f .github/workflows/ci.yml
 
       - name: Commit materialized source
         if: steps.payload.outputs.present == 'true'

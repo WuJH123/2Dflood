@@ -31,9 +31,33 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .bootstrap/part*.b64 > /tmp/2dflood_repo.b64
-          base64 --decode /tmp/2dflood_repo.b64 > /tmp/2dflood_repo.tar.gz
-          tar -xzf /tmp/2dflood_repo.tar.gz -C .
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          import hashlib
+          import tarfile
+
+          parts = [
+              '.bootstrap/part00.b64',
+              '.bootstrap/part01a.b64',
+              '.bootstrap/part01b.b64',
+              '.bootstrap/part01c.b64',
+              '.bootstrap/part01d.b64',
+              '.bootstrap/part02.b64',
+              '.bootstrap/part03.b64',
+              '.bootstrap/part04.b64',
+          ]
+          payload = ''.join(Path(p).read_text(encoding='utf-8') for p in parts)
+          raw = base64.b64decode(payload, validate=True)
+          digest = hashlib.sha256(raw).hexdigest()
+          expected = 'd3bc279291401c95190d93b6f8629bffd5563047161f1a5870b142d5bde3ea9a'
+          if digest != expected:
+              raise RuntimeError(f'bootstrap archive checksum mismatch: {digest} != {expected}')
+          archive = Path('/tmp/2dflood_repo.tar.gz')
+          archive.write_bytes(raw)
+          with tarfile.open(archive, 'r:gz') as tf:
+              tf.extractall('.')
+          PY
           rm -rf .bootstrap
           rm -f .github/workflows/bootstrap-source.yml
 
